@@ -1,0 +1,53 @@
+// script.js
+document.addEventListener("DOMContentLoaded", () => {
+    const passwordField = document.getElementById("password");
+    const copyBtn = document.getElementById("copy-btn");
+    const lengthInput = document.getElementById("length");
+    const lengthValue = document.getElementById("length-value");
+    const uppercase = document.getElementById("uppercase");
+    const lowercase = document.getElementById("lowercase");
+    const numbers = document.getElementById("numbers");
+    const symbols = document.getElementById("symbols");
+    const generateBtn = document.getElementById("generate-btn");
+
+    const charSets = {
+        uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        lowercase: "abcdefghijklmnopqrstuvwxyz",
+        numbers: "0123456789",
+        symbols: "!@#$%^&*()_+[]{}|;:,.<>?/"
+    };
+
+    function generatePassword() {
+        let characters = "";
+        let password = "";
+        if (uppercase.checked) characters += charSets.uppercase;
+        if (lowercase.checked) characters += charSets.lowercase;
+        if (numbers.checked) characters += charSets.numbers;
+        if (symbols.checked) characters += charSets.symbols;
+        
+        if (characters.length === 0) {
+            passwordField.value = "Seleccione al menos una opción";
+            return;
+        }
+        
+        for (let i = 0; i < lengthInput.value; i++) {
+            password += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        passwordField.value = password;
+    }
+
+    copyBtn.addEventListener("click", () => {
+        if (passwordField.value) {
+            navigator.clipboard.writeText(passwordField.value);
+            alert("Contraseña copiada al portapapeles");
+        }
+    });
+
+    lengthInput.addEventListener("input", () => {
+        lengthValue.textContent = lengthInput.value;
+    });
+
+    generateBtn.addEventListener("click", generatePassword);
+
+    generatePassword();
+});
